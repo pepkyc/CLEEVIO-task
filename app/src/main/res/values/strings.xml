@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">CLEEVIO</string>
+    <string name="no_permission">Can not access files without permission</string>
+</resources>
