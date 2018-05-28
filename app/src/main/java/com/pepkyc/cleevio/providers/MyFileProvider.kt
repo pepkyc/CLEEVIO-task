@@ -1,4 +1,6 @@
 package com.pepkyc.cleevio.providers
 
-class MyFileProvider {
+import android.support.v4.content.FileProvider
+
+class MyFileProvider : FileProvider() {
 }

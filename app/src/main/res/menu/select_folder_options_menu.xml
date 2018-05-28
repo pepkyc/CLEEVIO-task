@@ -2,18 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/settings"
-        android:title="Settings"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/refresh"
         android:icon="@drawable/ic_refresh_black_24dp"
         android:title="Refresh"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/set_path"
         android:icon="@drawable/ic_folder_open_black_24dp"
         android:title="Set folder"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/select_folder"
+        android:title="Select"
+        app:showAsAction="always" />
+
 </menu>

@@ -3,9 +3,12 @@ package com.pepkyc.cleevio.activity
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import android.webkit.MimeTypeMap
 import com.pepkyc.cleevio.R
 import com.pepkyc.cleevio.adapters.FileAdapter
@@ -14,15 +17,19 @@ import com.pepkyc.cleevio.listeners.ActionModeCallbacksListener
 import com.pepkyc.cleevio.viewmodels.BrowserViewModel
 import kotlinx.android.synthetic.main.activity_file_browser.*
 import java.io.File
+import android.support.v4.content.FileProvider
+
+
 
 /**
  * Activity sloužící k prohledávání filesystému
  */
-class FileBrowserActivity : AppCompatActivity(), FileAdapter.BrowseInteractionListener {
+class FileManagerActivity : AppCompatActivity(), FileAdapter.BrowseInteractionListener {
 
     companion object {
         val DEFAULT_DIRECTORY_KEY = "defdir"
     }
+
     var browserViewModel: BrowserViewModel? = null
     private val actionModeCallbacks = ActionModeCallbacksListener(this)
     val fragment = FileBrowserFragment.newInstance()
@@ -49,7 +56,23 @@ class FileBrowserActivity : AppCompatActivity(), FileAdapter.BrowseInteractionLi
         }
     }
 
-//    override fun onRequestPermissionsResult(requestCode: Int,
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.settings -> {
+                val i = Intent(this, SettingsActivity::class.java)
+                startActivity(i)
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.file_manager_options_menu, menu)
+        return true
+    }
+
+
 
     /**
      * Smaže složku a upraví adapter/recyclerview
@@ -101,7 +124,15 @@ class FileBrowserActivity : AppCompatActivity(), FileAdapter.BrowseInteractionLi
         val newIntent = Intent(Intent.ACTION_VIEW)
         val extension = fileExt(file.name)
         val mimeType = myMime.getMimeTypeFromExtension(extension)
-        newIntent.setDataAndType(Uri.fromFile(file), mimeType)
+
+        val uri = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
+            newIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            FileProvider.getUriForFile(this, applicationContext.packageName + ".com.pepkyc.cleevio", file)
+        }else{
+            Uri.fromFile(file)
+        }
+
+        newIntent.setDataAndType(uri, mimeType)
         newIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(Intent.createChooser(newIntent, "Open with:"))
     }
