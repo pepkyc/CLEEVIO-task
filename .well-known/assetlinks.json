@@ -1,1 +1,9 @@
-
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.stylar.debug",
+    "sha256_cert_fingerprints":
+    ["8A:83:74:11:68:F4:F0:06:BC:D2:3E:22:1A:A7:B5:E5:AF:D3:ED:84:45:EC:01:81:A2:21:11:39:48:A4:42:AB"]
+  }
+}]
